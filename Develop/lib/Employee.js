@@ -5,27 +5,27 @@ class Employee {
       this.id = id;
       this.email = email;
     }
-  
     getName() {
-        console.log(this.name);
+        return this.name 
     }
-    getId() {
-        console.log(this.id);
+    getId(){
+        return this.id
     }
     getEmail() {
-        console.log(this.email);
+        return this.email
     }
     getRole() {
-        console.log();
-    } // returns 'Employee'
-  }
-  module.exports = Employee;
+        return "Employee"
+    }
+}
+const person = new Employee("Susan", 1, "susan@ymail.com")
+
+    person.getName(); 
+    person.getId(); 
+    person.getEmail(); 
+    person.getRole();
+ 
+  
+ module.exports = Employee;
 
 
-// name
-// id
-// email
-// getName()
-// getId()
-// getEmail()
-// getRole() // Returns 'Employee'
