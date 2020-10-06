@@ -9,7 +9,7 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
-
+let team = [];
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
@@ -58,7 +58,117 @@ const questions = [
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
+function menu(){
+    inquirer.prompt(
+        {
+            type: "list",
+            name: "role",
+            message: "What step are you on?", 
+            choices: ["Add a Manager","Add a Engineer","Hire an Intern","Build Team"]
+        }
+    ).then((response) => {
+        switch(response.role){
+            case "Add a Manager":
+            getManager();
+            break;
+            case "Add a Engineer":
+            getEngineer();
+            break;
+            case "Hire an Intern":
+            getIntern();
+            break;
+            case "Build Team":
+            buildTeam();
+            break;
 
+        }
+    });
+}
+
+function getManager(){
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "name",
+            message: "What is the manager's name?" 
+        },{
+            type: "input",
+            name: "id",
+            message: "What is the manager's id?"
+        },{
+            type: "input",
+            name: "email",
+            message: "What is the manager's email?"
+        },{
+            type: "input",
+            name: "officeNumber",
+            message: "What is the manager's office number?"
+        }
+    ]).then((response) => {
+        const manager = new Manager(response.name, response.id, response.email, response.officeNumber);
+        team.push(manager);
+        menu();
+    })
+}
+
+function getEngineer(){
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "name",
+            message: "What is the Engineer's name?" 
+        },{
+            type: "input",
+            name: "id",
+            message: "What is the Engineer's id?"
+        },{
+            type: "input",
+            name: "email",
+            message: "What is the Engineer's email?"
+        },{
+            type: "input",
+            name: "github",
+            message: "What is the Engineer's github username?"
+        }
+    ]).then((response) => {
+        const engineer = new Engineer(response.name, response.id, response.email, response.github);
+        team.push(engineer);
+        menu();
+    })
+}
+
+function getIntern(){
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "name",
+            message: "What is the Intern's name?" 
+        },{
+            type: "input",
+            name: "id",
+            message: "What is the Intern's id?"
+        },{
+            type: "input",
+            name: "email",
+            message: "What is the Intern's email?"
+        },{
+            type: "input",
+            name: "school",
+            message: "What school did the Intern attend?"
+        }
+    ]).then((response) => {
+        const intern = new Intern(response.name, response.id, response.email, response.school);
+        team.push(intern);
+        menu();
+    })
+}
+
+function buildTeam(){
+    if(!fs.existsSync(OUTPUT_DIR)){
+        fs.mkdirSync(OUTPUT_DIR)
+    }
+    fs.writeFileSync(outputPath,render(team))
+}
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
 // `output` folder. You can use the variable `outputPath` above target this location.
@@ -74,3 +184,4 @@ const questions = [
 // for further information. Be sure to test out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
+menu();
